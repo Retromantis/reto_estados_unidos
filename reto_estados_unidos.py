@@ -1,4 +1,7 @@
 #EJERCICIO 1:
+
+import datetime
+
 #A.: crea una lista que contenga un diccionario por cada estado. Cada elemento de la lista será un diccionario. 
 
 estados = ["Alabama", "Florida", "Georgia", "South Carolina"]
@@ -19,19 +22,41 @@ for estado, pop_2000, pop_2001, res_2000, res_2001, muertes_2000, muertes_2001, 
     estados, poblacion_2000, poblacion_2001, residentes_2000, residentes_2001, muertes_2000, muertes_2001, latitudes, longitudes, fechas_fundacion
 ):
     datos_estados.append({
-        "Estado": estado,
-        "Población 2000": pop_2000,
-        "Población 2001": pop_2001,
-        "Residentes < 65 años 2000": res_2000,
-        "Residentes < 65 años 2001": res_2001,
-        "Muertes 2000": muertes_2000,
-        "Muertes 2001": muertes_2001,
-        "Latitud": lat,
-        "Longitud": lon,
-        "Fecha fundación": fecha
+        "estado": estado,
+        "poblacion_2000": pop_2000,
+        "poblacion_2001": pop_2001,
+        "resid_menor_65_2000": res_2000,
+        "resid_menor_65_2001": res_2001,
+        "muertes_2000": muertes_2000,
+        "muertes_2001": muertes_2001,
+        "latitud": lat,
+        "longitud": lon,
+        "fecha_fundacion": fecha
     })
 
+
+"""
+D:
+Incluid una nueva clave “Días desde fundación
+nombre_estado” que sea el número de días que han pasado desde la fundación del
+Estado hasta la actualidad. 
+"""
+
+def calcular_dias_desde_fundacion():
+    hoy = datetime.datetime.today()
+    print("Hoy ",hoy)
+
+    for estado in datos_estados:
+        date_str = estado['fecha_fundacion']
+        format_str = "%d-%m-%Y" # The format
+        fundacion = datetime.datetime.strptime(date_str, format_str)
+        dias = hoy - fundacion
+        estado['dias_desde_fundacion'] = dias.days
+
+
 # Imprimir la lista de diccionarios
+
+calcular_dias_desde_fundacion()
 
 for estado in datos_estados:
     print(estado)
