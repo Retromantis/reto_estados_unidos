@@ -60,3 +60,13 @@ calcular_dias_desde_fundacion()
 
 for estado in datos_estados:
     print(estado)
+
+# Agregar un nuevo valor al diccionario
+for estado in datos_estados:                 
+   if estado['estado'] == 'Florida':         # Identificamos clave Estado == Florida, si cumple la funcion, se accede a clave Poblacion 2001
+      estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
+      break
+
+
+for estado in datos_estados:                 
+    print(estado)
