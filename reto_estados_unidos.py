@@ -1,6 +1,6 @@
 #EJERCICIO 1:
 
-import datetime
+from datetime import datetime
 
 #A.: crea una lista que contenga un diccionario por cada estado. Cada elemento de la lista será un diccionario. 
 
@@ -43,20 +43,25 @@ Estado hasta la actualidad.
 """
 
 def calcular_dias_desde_fundacion():
-    hoy = datetime.datetime.today()
-    print("Hoy ",hoy)
+    hoy = datetime.today()                                  # obtener fecha actual
 
     for estado in datos_estados:
         date_str = estado['fecha_fundacion']
-        format_str = "%d-%m-%Y" # The format
-        fundacion = datetime.datetime.strptime(date_str, format_str)
-        dias = hoy - fundacion
-        estado['dias_desde_fundacion'] = dias.days
+        format_str = "%d-%m-%Y"                             # cadena con formato "dd-mm-aaaa"
+        fundacion = datetime.strptime(date_str, format_str) # convertir fecha con formato "dd-mm-aaaa" a objeto datetime
+        dias = hoy - fundacion                              # calcular el delta (diferencía de días)
+        estado['dias_desde_fundacion'] = dias.days          # guadar los días transcurridos en un nuevo campo 
 
-
-# Imprimir la lista de diccionarios
+def corregir_poblacion_florida():
+    # Agregar un nuevo valor al diccionario
+    for estado in datos_estados:                 
+        if estado['estado'] == 'Florida':        # Identificamos clave Estado == Florida, si cumple la funcion, se accede a clave Poblacion 2001
+          estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
+          break
 
 calcular_dias_desde_fundacion()
+corregir_poblacion_florida()
 
+# Imprimir la lista de diccionarios
 for estado in datos_estados:
     print(estado)
