@@ -91,5 +91,3 @@ calcular_dias_desde_fundacion()
 corregir_poblacion_florida()
 estado_antiguo_moderno()
 #listar_estados()
-
-
