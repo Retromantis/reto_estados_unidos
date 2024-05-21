@@ -34,14 +34,15 @@ for estado, pop_2000, pop_2001, res_2000, res_2001, muertes_2000, muertes_2001, 
         "fecha_fundacion": fecha
     })
 
-
-"""
-D:
-Incluid una nueva clave “Días desde fundación
-nombre_estado” que sea el número de días que han pasado desde la fundación del
-Estado hasta la actualidad. 
-"""
-
+def genenar_diccionario_estado(nombre):
+    diccionario = {}
+    nombre = nombre.lower()
+    for estado in datos_estados:
+        if estado['estado'].lower() == nombre:
+            for key in estado.keys():
+                diccionario[key + '_' + nombre] = estado[key]
+            break
+    
 def calcular_dias_desde_fundacion():
     hoy = datetime.today()                                  # obtener fecha actual
 
@@ -86,7 +87,7 @@ def listar_estados():
     for estado in datos_estados:
         print(estado)   
 
-
+genenar_diccionario_estado('florida')
 calcular_dias_desde_fundacion()
 corregir_poblacion_florida()
 estado_antiguo_moderno()
