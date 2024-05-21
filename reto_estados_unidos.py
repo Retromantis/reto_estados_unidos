@@ -1,5 +1,6 @@
 #EJERCICIO 1:
 
+import sys
 from datetime import datetime
 
 #A.: crea una lista que contenga un diccionario por cada estado. Cada elemento de la lista será un diccionario. 
@@ -15,7 +16,6 @@ latitudes = [33.258882, 27.756767, 32.329381, 33.687439]
 longitudes = [-86.829534, -81.463983, -83.113737, -80.436374]
 fechas_fundacion = ["14-12-1819", "03-03-1845", "12-02-1733", "26-03-1776"]
 
-# 
 datos_estados = []
 
 for estado, pop_2000, pop_2001, res_2000, res_2001, muertes_2000, muertes_2001, lat, lon, fecha in zip(
@@ -59,9 +59,37 @@ def corregir_poblacion_florida():
           estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
           break
 
+def estado_antiguo_moderno():
+    mas_dias = 0
+    menos_dias = sys.maxsize
+
+    for estado in datos_estados:
+        dias = estado['dias_desde_fundacion']
+        if dias > mas_dias:     # buscar el estado con más días desde su fundación
+            mas_dias = dias
+            mas_antiguo = estado
+        if dias < menos_dias:   # buscar el estado con ménos días desde su fundación
+            menos_dias = dias
+            mas_moderno = estado
+
+    años_antiguo = mas_dias // 365      
+    años_moderno = menos_dias // 365      
+    años_diferencia = años_antiguo - años_moderno    
+
+    print('El estado más antiguo es',mas_antiguo['estado'],'con',años_antiguo,'años desde su fundación')
+    print('El estado más moderno es',mas_moderno['estado'],'con',años_moderno,'años desde su fundación')
+    print('La diferencia en años entre el estado más antiguo y el más moderno es de',años_diferencia,'años')
+    
+
+def listar_estados():
+    # Imprimir la lista de diccionarios
+    for estado in datos_estados:
+        print(estado)   
+
+
 calcular_dias_desde_fundacion()
 corregir_poblacion_florida()
+estado_antiguo_moderno()
+#listar_estados()
 
-# Imprimir la lista de diccionarios
-for estado in datos_estados:
-    print(estado)
+
