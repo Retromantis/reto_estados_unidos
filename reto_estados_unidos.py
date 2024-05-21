@@ -1,6 +1,7 @@
 #EJERCICIO 1:
 
 import sys
+from random import random
 from datetime import datetime
 
 #A.: crea una lista que contenga un diccionario por cada estado. Cada elemento de la lista será un diccionario. 
@@ -34,31 +35,41 @@ for estado, pop_2000, pop_2001, res_2000, res_2001, muertes_2000, muertes_2001, 
         "fecha_fundacion": fecha
     })
 
-def genenar_diccionario_estado(nombre):
+def buscar_estado(nombre):
     diccionario = {}
     nombre = nombre.lower()
     for estado in datos_estados:
         if estado['estado'].lower() == nombre:
-            for key in estado.keys():
-                diccionario[key + '_' + nombre] = estado[key]
+            diccionario = estado
             break
+    return diccionario
+
+
+# busca en la lista un estado y devuelve un nuevo diccionario
+def genenar_diccionario_estado(nombre):
+    diccionario = {}
+    estado = buscar_estado(nombre)
+    if estado:
+        for key in estado.keys():
+            diccionario[key + '_' + nombre] = estado[key]
+    return diccionario
+
     
 def calcular_dias_desde_fundacion():
-    hoy = datetime.today()                                  # obtener fecha actual
-
     for estado in datos_estados:
         date_str = estado['fecha_fundacion']
         format_str = "%d-%m-%Y"                             # cadena con formato "dd-mm-aaaa"
         fundacion = datetime.strptime(date_str, format_str) # convertir fecha con formato "dd-mm-aaaa" a objeto datetime
-        dias = hoy - fundacion                              # calcular el delta (diferencía de días)
+        dias = datetime.today() - fundacion                              # calcular el delta (diferencía de días)
         estado['dias_desde_fundacion'] = dias.days          # guadar los días transcurridos en un nuevo campo 
+
 
 def corregir_poblacion_florida():
     # Agregar un nuevo valor al diccionario
-    for estado in datos_estados:                 
-        if estado['estado'] == 'Florida':        # Identificamos clave Estado == Florida, si cumple la funcion, se accede a clave Poblacion 2001
-          estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
-          break
+    estado = buscar_estado('Florida')
+    if estado:                 
+        estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
+
 
 def estado_antiguo_moderno():
     mas_dias = 0
@@ -80,6 +91,19 @@ def estado_antiguo_moderno():
     print('El estado más antiguo es',mas_antiguo['estado'],'con',años_antiguo,'años desde su fundación')
     print('El estado más moderno es',mas_moderno['estado'],'con',años_moderno,'años desde su fundación')
     print('La diferencia en años entre el estado más antiguo y el más moderno es de',años_diferencia,'años')
+
+
+def calcular_crecimiento_ploblacion():
+    alabama = genenar_diccionario_estado('Alabama')
+    south_carolina = genenar_diccionario_estado('South Carolina')
+    ratio_1 = random()
+    ratio_2 = random()
+    alabama['ratio_crecimiento'] = min(ratio_1,ratio_2)
+    south_carolina['ratio_crecimiento'] = max(ratio_1,ratio_2)
+
+    print(alabama)
+    print(south_carolina)
+    # TODO 
     
 
 def listar_estados():
@@ -87,8 +111,9 @@ def listar_estados():
     for estado in datos_estados:
         print(estado)   
 
-genenar_diccionario_estado('florida')
 calcular_dias_desde_fundacion()
 corregir_poblacion_florida()
 estado_antiguo_moderno()
 #listar_estados()
+#print(genenar_diccionario_estado('alabama'))
+#calcular_crecimiento_ploblacion()
