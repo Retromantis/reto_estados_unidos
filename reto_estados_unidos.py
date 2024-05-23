@@ -92,8 +92,36 @@ def estado_antiguo_moderno():
     print('El estado más moderno es',mas_moderno['estado'],'con',años_moderno,'años desde su fundación')
     print('La diferencia en años entre el estado más antiguo y el más moderno es de',años_diferencia,'años')
 
+def listar_estados():
+    # Imprimir la lista de diccionarios
+    for estado in datos_estados:
+        print(estado)   
 
-def calcular_crecimiento_ploblacion():
+def porcentaje_mayores_65():
+    #Realizamos para los mayores de 65 años en el 2000
+    for estado in datos_estados:
+        res_menor = estado['resid_menor_65_2000']
+        total_pob = estado['poblacion_2000']
+
+        porcentaje_mayor = ((total_pob - res_menor)/total_pob)*100
+        porcentaje_mayor = round(porcentaje_mayor, 2)
+        
+        estado['porcentaje_mayor_65_años_2000'] = porcentaje_mayor
+
+
+    #Luego, realizamos para los mayores de 65 años en el 2001
+
+    for estado in datos_estados:
+        res_menor = estado['resid_menor_65_2001']
+        total_pob = estado['poblacion_2001']
+
+        porcentaje_mayor = ((total_pob - res_menor)/total_pob)*100
+        porcentaje_mayor = round(porcentaje_mayor, 2)
+        
+        estado['porcentaje_mayor_65_años_2001'] = porcentaje_mayor
+
+
+def calcular_crecimiento_poblacion():
     alabama = genenar_diccionario_estado('Alabama')
     south_carolina = genenar_diccionario_estado('South Carolina')
     ratio_1 = random()
@@ -104,16 +132,12 @@ def calcular_crecimiento_ploblacion():
     print(alabama)
     print(south_carolina)
     # TODO 
-    
 
-def listar_estados():
-    # Imprimir la lista de diccionarios
-    for estado in datos_estados:
-        print(estado)   
 
 calcular_dias_desde_fundacion()
 corregir_poblacion_florida()
+porcentaje_mayores_65()
 estado_antiguo_moderno()
-#listar_estados()
+listar_estados()
 #print(genenar_diccionario_estado('alabama'))
 #calcular_crecimiento_ploblacion()
