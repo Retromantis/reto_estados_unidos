@@ -37,7 +37,16 @@ for estado, pop_2000, pop_2001, res_2000, res_2001, muertes_2000, muertes_2001, 
         "fecha_fundacion": fecha
     })
 
+for estado in datos_estados:
+    print(estado)
 
+# Agregar un nuevo valor al diccionario
+for estado in datos_estados:                 
+   if estado['estado'] == 'Florida':         # Identificamos clave Estado == Florida, si cumple la funcion, se accede a clave Poblacion 2001
+      estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
+      break
+
+      
 # Ejercicio 1.b: Solución desarrollada por Victor Zegarra
 
 # generar tantos diccionarios como Estados tengamos con el formato "llave_nombre_estado"
@@ -313,6 +322,8 @@ def generar_mapa_poblacion_2002(html_filename):
         circle = folium.Circle((x[i], y[i]),color = "blue",fill_color = "red", radius = 20.02, weight = 40, fill_opacity = 0.5).add_to(map_eua)
     
     map_eua.save(html_filename)
+    
+    
 
 genenar_diccionarios_estados()
 
