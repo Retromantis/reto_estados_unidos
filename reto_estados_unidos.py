@@ -269,3 +269,27 @@ func_edit_proyecydemo()
 
 # 3) Muestra diccionarios y resultados finales
 listar_estados()
+
+
+
+#/////////////////////////////////////
+#           Ejercicio 4
+#////////////////////////////////////
+
+
+# Crear un mapa centrado en la primera coordenada
+map_eua = folium.Map(location = [30.101271,-82.370146],zoom_start = 6)
+folium.Marker(location = [30.101271,-82.370146]).add_to(map_eua)
+
+#Coloca circulo en la posicion indicada
+folium.Circle(location = [30.101271,-82.370146],color = "red",fill_color = "red", radius = 20.02, weight = 40, fill_opacity = 0.5).add_to(map_eua)
+
+# Definir las listas de coordenadas como arrays
+y = np.array([-83.194062, -86.680734, -83.804601, -80.926614])
+x = np.array([32.67853, 32.576226, 27.59468, 33.605719])
+
+# Agregar circulos para cada coordenada
+for i in range(4):
+    circle = folium.Circle((x[i], y[i]),color = "blue",fill_color = "red", radius = 20.02, weight = 40, fill_opacity = 0.5).add_to(map_eua)
+ 
+map_eua
