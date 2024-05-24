@@ -1,6 +1,8 @@
 #EJERCICIO 1:
 
 import sys
+import folium #Importa dependencia
+import numpy as np
 from random import random
 from datetime import datetime
 
@@ -34,6 +36,15 @@ for estado, pop_2000, pop_2001, res_2000, res_2001, muertes_2000, muertes_2001, 
         "longitud": lon,
         "fecha_fundacion": fecha
     })
+
+for estado in datos_estados:
+    print(estado)
+
+# Agregar un nuevo valor al diccionario
+for estado in datos_estados:                 
+   if estado['estado'] == 'Florida':         # Identificamos clave Estado == Florida, si cumple la funcion, se accede a clave Poblacion 2001
+      estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
+      break
 
 def buscar_estado(nombre):
     diccionario = {}
@@ -117,3 +128,28 @@ estado_antiguo_moderno()
 #listar_estados()
 #print(genenar_diccionario_estado('alabama'))
 #calcular_crecimiento_ploblacion()
+
+
+
+
+
+#///////////////////////////////////////////////////
+#                  Ejercicio 4
+#///////////////////////////////////////////////////
+
+# Crear un mapa centrado en la primera coordenada
+map_eua = folium.Map(location = [30.101271,-82.370146],zoom_start = 6)
+folium.Marker(location = [30.101271,-82.370146]).add_to(map_eua)
+
+#Coloca circulo en la posicion indicada
+folium.Circle(location = [30.101271,-82.370146],color = "red",fill_color = "red", radius = 20.02, weight = 40, fill_opacity = 0.5).add_to(map_eua)
+
+# Definir las listas de coordenadas como arrays
+y = np.array([-83.194062, -86.680734, -83.804601, -80.926614])
+x = np.array([32.67853, 32.576226, 27.59468, 33.605719])
+
+# Agregar circulos para cada coordenada
+for i in range(4):
+    circle = folium.Circle((x[i], y[i]),color = "blue",fill_color = "red", radius = 20.02, weight = 40, fill_opacity = 0.5).add_to(map_eua)
+ 
+map_eua
