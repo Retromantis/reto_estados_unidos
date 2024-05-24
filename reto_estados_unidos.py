@@ -1,5 +1,5 @@
 import sys
-from random import random
+import random 
 from datetime import datetime
 
 
@@ -128,9 +128,9 @@ def estado_antiguo_moderno():
     años_moderno = menos_dias // 365      
     años_diferencia = años_antiguo - años_moderno    
 
-    print('El estado más antiguo es',mas_antiguo['estado'],'con',años_antiguo,'años desde su fundación')
-    print('El estado más moderno es',mas_moderno['estado'],'con',años_moderno,'años desde su fundación')
-    print('La diferencia en años entre el estado más antiguo y el más moderno es de',años_diferencia,'años')
+    print(f'El estado más antiguo es {mas_antiguo['estado']} con {años_antiguo} años desde su fundación')
+    print(f'El estado más moderno es {mas_moderno['estado']} con {años_moderno} años desde su fundación')
+    print(f'La diferencia en años entre el estado más antiguo y el más moderno es de {años_diferencia} años\n')
 
 def listar_estados():
     # Imprimir la lista de diccionarios
@@ -138,19 +138,76 @@ def listar_estados():
         print(estado)   
 
 
-# Ejercicio 2: **** INCOMPLETO ****
+# Ejercicio 2: Solución desarrollada por Rafael
 
 def calcular_crecimiento_poblacion():
-    alabama = genenar_diccionario_estado('Alabama')
-    south_carolina = genenar_diccionario_estado('South Carolina')
-    ratio_1 = random()
-    ratio_2 = random()
-    alabama['ratio_crecimiento'] = min(ratio_1,ratio_2)
-    south_carolina['ratio_crecimiento'] = max(ratio_1,ratio_2)
+    pob_alabama = 0
+    pob_s_carolina = 0
 
-    print(alabama)
-    print(south_carolina)
-    # TODO 
+    # Sacamos los valores de las poblaciones de los estados solicitados del 2001
+
+    for estado in datos_estados:
+        if(estado['estado'] == 'Alabama'):
+            pob_alabama = estado['poblacion_2001']
+        elif (estado['estado'] == 'South Carolina'):
+            pob_s_carolina = estado['poblacion_2001']
+
+    ratio_menor = 0
+    ratio_mayor = 0.1
+
+    año_pob = 2022
+
+    #Generamos las tasa de crecimiento aleatorias
+
+    tasa_crecimiento_alabama = random.uniform(ratio_menor, ratio_mayor)
+    tasa_crecimiento_south_carolina = random.uniform(tasa_crecimiento_alabama, ratio_mayor)
+
+    #Para las preguntas 1 y 2 se realizará lo siguiente
+
+    while (pob_s_carolina <= pob_alabama):
+
+        #Calcular nuevas poblaciones de cada año
+
+        n_pob_alabama = pob_alabama*(1 + tasa_crecimiento_alabama)
+        n_pob_south_carolina = pob_s_carolina*(1 + tasa_crecimiento_south_carolina)
+
+        pob_alabama = n_pob_alabama
+        pob_s_carolina = n_pob_south_carolina
+
+        año_pob += 1
+
+    print(f"Años que tardará en alcanzar a la población {año_pob - 2001}")
+    print(f"Carolina del Sur alcanzará a Alabama en el año {año_pob}")
+
+    #Para la pregunta 3 se aplicará la tasa de fallecidos
+
+    fall_alabama = 0
+    fall_s_carolina = 0
+
+    for estado in datos_estados:
+        if(estado['estado'] == 'Alabama'):
+            fall_alabama = estado['muertes_2001']
+        elif (estado['estado'] == 'South Carolina'):
+            fall_s_carolina = estado['muertes_2001']
+
+    t_f_alabama = fall_alabama / 4451493
+    t_f_s_carolina = fall_s_carolina / 4023438
+
+
+    while (pob_s_carolina <= pob_alabama):
+
+        #Calcular nuevas poblaciones de cada año
+
+        n_pob_alabama = pob_alabama*(1 + tasa_crecimiento_alabama - t_f_alabama)
+        n_pob_south_carolina = pob_s_carolina*(1 + tasa_crecimiento_south_carolina - t_f_s_carolina)
+
+        pob_alabama = n_pob_alabama
+        pob_s_carolina = n_pob_south_carolina
+
+        año_pob += 1
+
+    print(f"Años que tardará en alcanzar a la población {año_pob - 2001}")
+    print(f"Carolina del Sur alcanzará a Alabama en el año {año_pob}\n")
 
 
 # Ejercicio 3: Solución desarrollada por María Tapia
@@ -194,6 +251,8 @@ def proyeccion_poblacion_demografia(año_1, año_2):
 
     for estado in info_estados:
         print(estado)
+
+    print()    
 
 
 # Ejercicio 3: Solución desarrollada por Patricio
@@ -246,14 +305,13 @@ def func_edit_proyecydemo():
 calcular_dias_desde_fundacion()
 corregir_poblacion_florida()
 porcentaje_mayores_65()
+
 estado_antiguo_moderno()
-print()
 #print(genenar_diccionario_estado('alabama'))
-#calcular_crecimiento_ploblacion()
+calcular_crecimiento_poblacion()
 
 #llamado del ejercicio 3: Solucionado por María
 proyeccion_poblacion_demografia(2000, 2001)
-print()
 
 #llamado del ejercicio 3: Soluciónado por Patricio
 func_edit_proyecydemo()
