@@ -134,10 +134,55 @@ def calcular_crecimiento_poblacion():
     # TODO 
 
 
+#Ejercicio 3: Solución desarrollada por María Tapia
+
+#Creamos la funcion:
+def proyeccion_poblacion_demografia(año_1, año_2):
+
+    #Hacemos una nueva lista e iteramos solo los datos que necesitaremos: estados, poblacion 2000, 2001 y fecha fundacion:
+    info_estados = []
+
+    for estado, pobl_1, pobl_2, fund  in zip(estados, poblacion_2000, poblacion_2001, fechas_fundacion):
+        info_estados.append({
+            'estado': estado,
+            'poblacion_2000': pobl_1,
+            'poblacion_2001': pobl_2,
+            'fecha_fundacion': fund
+        })
+
+    for estado in info_estados:
+        pobl_1 = estado['poblacion_' + str(año_1)]    #Obtenemos las claves donde el año_1 ingresado es convertido en string para que pueda agregarse al texto y ser ubicado
+        pobl_2 = estado['poblacion_' + str(año_2)]    #Igual con el año_2
+        
+        # Proyección de la población para el año siguiente al año_2
+        ratio = pobl_2 / pobl_1
+        proximo_año = año_2 + 1
+        poblacion_proyectada = ratio * pobl_2
+        
+        # Calculamos t desde la fundación hasta 1900
+        ''' Obtenemos el año de fundacion haciendo un .split que separara la fecha por cada "-" 
+        que encontremos (ejemplo: "14-12-1819" lo pasa a: "14" "12" "1819") y con el [-1] selecciona 
+        al ultimo elemento, en este caso el año'''  
+        año_fundacion = int(estado['fecha_fundacion'].split("-")[-1])   
+        t = 1900 - año_fundacion
+        
+        # Función demográfica P(t)
+        P_t = (14500 * t + 7000) / (2 * t + 1)
+        
+        # Añadimos resultados al diccionario del estado
+        estado['poblacion_' + str(proximo_año)] = poblacion_proyectada
+        estado['poblacion_demografica'] = P_t
+
+    for estado in info_estados:
+        print(estado)        
+
+
 calcular_dias_desde_fundacion()
 corregir_poblacion_florida()
 porcentaje_mayores_65()
-estado_antiguo_moderno()
-listar_estados()
+#estado_antiguo_moderno()
+#listar_estados()
 #print(genenar_diccionario_estado('alabama'))
 #calcular_crecimiento_ploblacion()
+
+proyeccion_poblacion_demografia(2000, 2001)
