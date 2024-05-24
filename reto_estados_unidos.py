@@ -1,4 +1,6 @@
 import sys
+import folium
+import numpy as np
 import random 
 from datetime import datetime
 
@@ -36,37 +38,28 @@ for estado, pop_2000, pop_2001, res_2000, res_2001, muertes_2000, muertes_2001, 
     })
 
 
-# busca en la lista un estado por nombre y lo devuelve por Victor Zegarra
-def buscar_estado(nombre):
-    diccionario = {}
-    nombre = nombre.lower()
-    for estado in datos_estados:
-        if estado['estado'].lower() == nombre:
-            diccionario = estado
-            break
-    return diccionario
-
-
 # Ejercicio 1.b: Solución desarrollada por Victor Zegarra
 
-# busca en la lista un estado y devuelve un nuevo diccionario
-def genenar_diccionario_estado(nombre):
-    diccionario = {}
-    estado = buscar_estado(nombre)
-    if estado:
+# generar tantos diccionarios como Estados tengamos con el formato "llave_nombre_estado"
+def genenar_diccionarios_estados():
+    for estado in datos_estados:
+        diccionario = {}
+        nombre = estado['estado']
         for key in estado.keys():
             diccionario[key + '_' + nombre] = estado[key]
-    return diccionario
+        print(diccionario)
+    print()
 
 
 # Ejercicio 1.c: Solución desarrollada por María Tapia
 
 # correción de la población del estado de Florida
 def corregir_poblacion_florida():
-    # Agregar un nuevo valor al diccionario
-    estado = buscar_estado('Florida')
-    if estado:                 
-        estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor 
+    for estado in datos_estados:
+        if estado['estado'] == 'Florida':
+            # Agregar un nuevo valor al diccionario
+            estado['poblacion_2001'] = 16054328    # se ingresa a la clave Población 2001 y colocamos el nuevo valor
+            break
 
 
 # Ejercicio 1.d: Solución desarrollada por Victor Zegarra y Rafael
@@ -301,13 +294,33 @@ def func_edit_proyecydemo():
         estado['poblacion_demografica'] = func_ecu_demografica(t)
 
 
+# Ejercicio 4: Solución desarrollada por Mayra Guadalupe
 
-calcular_dias_desde_fundacion()
+def generar_mapa_poblacion_2002(html_filename):
+    # Crear un mapa centrado en la primera coordenada
+    map_eua = folium.Map(location = [30.101271,-82.370146],zoom_start = 6)
+    folium.Marker(location = [30.101271,-82.370146]).add_to(map_eua)
+
+    #Coloca circulo en la posicion indicada
+    folium.Circle(location = [30.101271,-82.370146],color = "red",fill_color = "red", radius = 20.02, weight = 40, fill_opacity = 0.5).add_to(map_eua)
+
+    # Definir las listas de coordenadas como arrays
+    y = np.array([-83.194062, -86.680734, -83.804601, -80.926614])
+    x = np.array([32.67853, 32.576226, 27.59468, 33.605719])
+
+    # Agregar circulos para cada coordenada
+    for i in range(4):
+        circle = folium.Circle((x[i], y[i]),color = "blue",fill_color = "red", radius = 20.02, weight = 40, fill_opacity = 0.5).add_to(map_eua)
+    
+    map_eua.save(html_filename)
+
+genenar_diccionarios_estados()
+
 corregir_poblacion_florida()
+calcular_dias_desde_fundacion()
 porcentaje_mayores_65()
 
 estado_antiguo_moderno()
-#print(genenar_diccionario_estado('alabama'))
 calcular_crecimiento_poblacion()
 
 #llamado del ejercicio 3: Solucionado por María
@@ -318,3 +331,5 @@ func_edit_proyecydemo()
 
 # 3) Muestra diccionarios y resultados finales
 listar_estados()
+
+#generar_mapa_poblacion_2002('../index.html')
