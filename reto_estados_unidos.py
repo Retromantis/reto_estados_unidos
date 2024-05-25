@@ -121,14 +121,14 @@ def estado_antiguo_moderno():
     años_moderno = menos_dias // 365      
     años_diferencia = años_antiguo - años_moderno    
 
-    print(f'El estado más antiguo es {mas_antiguo['estado']} con {años_antiguo} años desde su fundación')
-    print(f'El estado más moderno es {mas_moderno['estado']} con {años_moderno} años desde su fundación')
-    print(f'La diferencia en años entre el estado más antiguo y el más moderno es de {años_diferencia} años\n')
+    print('El estado más antiguo es ',mas_antiguo['estado'],'con',años_antiguo,'años desde su fundación')
+    print('El estado más moderno es ',mas_moderno['estado'],'con',años_moderno,'años desde su fundación')
+    print('La diferencia en años entre el estado más antiguo y el más moderno es de',años_diferencia,'años\n')
 
 def listar_estados():
     # Imprimir la lista de diccionarios
     for estado in datos_estados:
-        print(estado)   
+        print(estado,'\n')   
 
 
 # Ejercicio 2: Solución desarrollada por Rafael
@@ -272,7 +272,7 @@ def func_ecu_pobla2002(poblacion_2000, poblacion_2001):
 
 def func_ecu_demografica(t):
     # AQUI HAY QUE DISCUTIR DE QUE MANERA LA TOMAMOS, los parentesis
-    return (14500 * t) + (7000/(2*t) + 1)
+    return (14500 * t  + 7000) / (2*t + 1)
 
 
 # 2.2) (hacer t= año de fundacion - 1900), funcion p(t), resultado P(t) para cada estado
