@@ -281,7 +281,7 @@ def func_ecu_pobla2002(poblacion_2000, poblacion_2001):
 
 def func_ecu_demografica(t):
     # AQUI HAY QUE DISCUTIR DE QUE MANERA LA TOMAMOS, los parentesis
-    return (14500 * t  + 7000) / (2*t + 1)
+    return 18000 * t + 1
 
 
 # 2.2) (hacer t= año de fundacion - 1900), funcion p(t), resultado P(t) para cada estado
@@ -303,7 +303,7 @@ def func_edit_proyecydemo():
         estado['poblacion_demografica'] = func_ecu_demografica(t)
 
 
-# Ejercicio 4: Solución desarrollada por Mayra Guadalupe
+# Ejercicio 4: Solución desarrollada por Mayra Guadalupe Arias Lopez
 
 def generar_mapa_poblacion_2002(html_filename):
     # Crear un mapa centrado en la primera coordenada
