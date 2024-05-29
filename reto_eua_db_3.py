@@ -41,7 +41,14 @@ json_poblacion = json.dumps(poblacion)
 json_muertes = json.dumps(muertes)
 json_residentes = json.dumps(residentes)
 
+print('\nJSON Estados')
 print(json_estados)
+
+print('\nJSON Población')
 print(json_poblacion)
+
+print('\nJSON Muertes')
 print(json_muertes)
+
+print('\nJSON Residentes < 65')
 print(json_residentes)
