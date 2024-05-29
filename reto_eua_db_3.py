@@ -5,6 +5,7 @@
 #-------------------------------------------------------------------
 
 import mysql.connector as myconector;
+import json
 
 conect= myconector.connect(user='root', password ='', host = 'localhost', database = 'estados_unidos', port = "3306")
 query = conect.cursor()
@@ -32,3 +33,15 @@ residentes = query.fetchall()
 print('\nResidentes < 65')
 for residente in residentes:
     print(residente)
+
+query.close()
+
+json_estados = json.dumps(estados)
+json_poblacion = json.dumps(poblacion)
+json_muertes = json.dumps(muertes)
+json_residentes = json.dumps(residentes)
+
+print(json_estados)
+print(json_poblacion)
+print(json_muertes)
+print(json_residentes)
