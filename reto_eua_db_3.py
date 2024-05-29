@@ -1,54 +1,87 @@
 #-------------------------------------------------------------------
 #
-#                            EJERCICIO 2
+#                            EJERCICIO 3
+#
+#-------------------------------------------------------------------
+
+#-------------------------------------------------------------------
+#
+#                     Consultar tablas de MySQL
 #
 #-------------------------------------------------------------------
 
 import mysql.connector as myconector;
-import json
+import pymongo
 
 conect= myconector.connect(user='root', password ='', host = 'localhost', database = 'estados_unidos', port = "3306")
-query = conect.cursor()
+cursor = conect.cursor()
 
-query.execute("SELECT * FROM estados")
-estados = query.fetchall()
-print('\nEstados')
-for estado in estados:
-    print(estado)
+def convertir_tabla_a_coleccion(tabla, keys):
+    coleccion = []
+    cursor.execute("SELECT * FROM " + tabla)
+    list = cursor.fetchall()
+    for values in list:
+        dictionary = dict(zip(keys, values))
+        coleccion.append(dictionary)
+    return coleccion    
 
-query.execute("SELECT * FROM poblacion")
-poblacion = query.fetchall()
-print('\nPoblación')
-for pop in poblacion:
-    print(pop)
+coleccion_estados = convertir_tabla_a_coleccion('estados', ('Id_Estado', 'Nombre', 'Fecha_Fundacion', 'Latitud', 'Longitud'))
+print('\nEstados:\n', coleccion_estados)
 
-query.execute("SELECT * FROM muertes")
-muertes = query.fetchall()
-print('\nMuertes')
-for muerte in muertes:
-    print(muerte)
+coleccion_poblacion = convertir_tabla_a_coleccion('estados', ('Id_Poblacion', 'Id_estado', 'Anio', 'cantidad'))
+print('\nPoblación:\n', coleccion_poblacion)
 
-query.execute("SELECT * FROM residentes_65")
-residentes = query.fetchall()
-print('\nResidentes < 65')
-for residente in residentes:
-    print(residente)
+coleccion_muertes = convertir_tabla_a_coleccion('muertes', ('Id_Muertes', 'Id_estado', 'Anio', 'cantidad'))
+print('\nMuertes:\n', coleccion_muertes)
 
-query.close()
+coleccion_residentes = convertir_tabla_a_coleccion('residentes_65', ('Id_Residentes', 'Id_estado', 'Anio', 'cantidad'))
+print('\nResidentes < 65:\n', coleccion_residentes)
 
-json_estados = json.dumps(estados)
-json_poblacion = json.dumps(poblacion)
-json_muertes = json.dumps(muertes)
-json_residentes = json.dumps(residentes)
+cursor.close()
 
-print('\nJSON Estados')
-print(json_estados)
 
-print('\nJSON Población')
-print(json_poblacion)
+#-------------------------------------------------------------------
+#
+#       Insertar datos en MongoDB desde las tablas de MySQL
+#
+#-------------------------------------------------------------------
 
-print('\nJSON Muertes')
-print(json_muertes)
+MONGO_HOST = "localhost"
+MONGO_PORT = "27017"
+MONGO_TIME_OUT = 1000
+MONGO_URL = "mongodb://"+MONGO_HOST+":"+MONGO_PORT+"/" 
 
-print('\nJSON Residentes < 65')
-print(json_residentes)
+def insertar_coleccion(collection_name, collection_data):
+    collection = db[collection_name]
+    collection.insert_many(collection_data)
+
+def mostrar_documentos(collection_name):
+    print(f'\n{collection_name}:\n')
+    collection = db[collection_name]
+    list = collection.find({})
+    for document in list:
+        print(document)
+
+try:
+    client = pymongo.MongoClient(MONGO_URL,serverSelectionTimeoutMS=MONGO_TIME_OUT)
+    client.server_info()
+    print("Conexión con mongo exitosa")
+
+    db = client["estados_unidos"]
+
+    insertar_coleccion('estados', coleccion_estados)
+    insertar_coleccion('muertes', coleccion_muertes)
+    insertar_coleccion('poblacion', coleccion_poblacion)
+    insertar_coleccion('residentes_65', coleccion_residentes)
+
+    mostrar_documentos('estados')
+    mostrar_documentos('muertes')
+    mostrar_documentos('poblacion')
+    mostrar_documentos('residentes_65')
+
+    client.close()
+
+except pymongo.errors.ServerSelectionTimeoutError as errorTiempo:
+    print("Tiempo excedido de carga", errorTiempo)
+except pymongo.errors.ConnectionFailure as errorConexion:
+    print("Fallo al conectarse a mongodb", errorConexion)
