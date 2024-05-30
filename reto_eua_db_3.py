@@ -28,7 +28,7 @@ def convertir_tabla_a_coleccion(tabla, keys):
 coleccion_estados = convertir_tabla_a_coleccion('estados', ('Id_Estado', 'Nombre', 'Fecha_Fundacion', 'Latitud', 'Longitud'))
 print('\nEstados:\n', coleccion_estados)
 
-coleccion_poblacion = convertir_tabla_a_coleccion('estados', ('Id_Poblacion', 'Id_estado', 'Anio', 'cantidad'))
+coleccion_poblacion = convertir_tabla_a_coleccion('poblacion', ('Id_Poblacion', 'Id_estado', 'Anio', 'cantidad'))
 print('\nPoblación:\n', coleccion_poblacion)
 
 coleccion_muertes = convertir_tabla_a_coleccion('muertes', ('Id_Muertes', 'Id_estado', 'Anio', 'cantidad'))
@@ -65,7 +65,7 @@ def mostrar_documentos(collection_name):
 try:
     client = pymongo.MongoClient(MONGO_URL,serverSelectionTimeoutMS=MONGO_TIME_OUT)
     client.server_info()
-    print("Conexión con mongo exitosa")
+    print("\nConexión con mongo exitosa")
 
     db = client["estados_unidos"]
 
